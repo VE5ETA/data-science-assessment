@@ -6,7 +6,14 @@ expected_result = [
     (1, 'Real Estate', 30.0),
     (1, 'Software', 30.0),
     (2, 'Energy', 50.0),
-    (2, 'Technology Hardware & Equipment', 50.0)
+    (2, 'Technology Hardware & Equipment', 50.0),
+    (3, 'Healthcare', 100.0),
+    (4, 'Consumer Goods', 60.0),
+    (4, 'Energy', 20.0),
+    (4, 'Financial Services', 20.0),
+    (5, 'Real Estate', 33.33),
+    (5, 'Software', 33.33),
+    (5, 'Technology Hardware & Equipment', 33.33)
 ]
 
 conn = sqlite3.connect("investment.db")
@@ -39,7 +46,18 @@ cur.executemany(
 INSERT INTO investor_transactions (investor_id, sector_id, no_of_shares)
 VALUES (?, ?, ?);
 """,
-    [(1, 10, 40), (1, 20, 30), (1, 30, 30), (2, 40, 50), (2, 50, 50)],
+    [
+        # Investor 1: 40% Financial Services, 30% Real Estate, 30% Software (100 shares total)
+        (1, 10, 40), (1, 20, 30), (1, 30, 30),
+        # Investor 2: 50% Energy, 50% Tech Hardware (100 shares total)
+        (2, 40, 50), (2, 50, 50),
+        # Investor 3: 100% Healthcare (single sector, 50 shares total)
+        (3, 60, 50),
+        # Investor 4: 60% Consumer Goods, 20% Energy, 20% Financial Services (50 shares total)
+        (4, 70, 30), (4, 40, 10), (4, 10, 10),
+        # Investor 5: 33.33% each in 3 sectors (300 shares total)
+        (5, 20, 100), (5, 30, 100), (5, 50, 100),
+    ],
 )
 
 cur.executemany(
@@ -53,6 +71,8 @@ VALUES (?, ?);
         (30, "Software"),
         (40, "Energy"),
         (50, "Technology Hardware & Equipment"),
+        (60, "Healthcare"),
+        (70, "Consumer Goods"),
     ],
 )
 
